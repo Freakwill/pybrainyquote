@@ -1,7 +1,7 @@
 # PyBrainyquote
 
 
-Get quotes from brainyquote. Make you life positive.
+Get quotes from brainyquote. Make you life positive. It is more powerful then (viveksb007/pybrainyquote)[https://github.com/viveksb007/pybrainyquote]
 
 Requirements
 -------------
