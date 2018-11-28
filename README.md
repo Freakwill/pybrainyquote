@@ -14,7 +14,7 @@ furl
 Download
 ---------
 
-pip install pybrainyquote
+`pip install pybrainyquote`
 
 
 Why
@@ -28,7 +28,7 @@ Grammar
     
 Import
 
-   from pybrainyquote import *
+    from pybrainyquote import *
 
 Get quotes
 
