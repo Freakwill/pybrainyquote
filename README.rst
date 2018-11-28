@@ -23,7 +23,6 @@ Why
 The original one `brainyquote` is too simple. 
 
 
-
 Grammar
 --------
     
