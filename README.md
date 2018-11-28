@@ -26,12 +26,12 @@ The original one `brainyquote` is too simple.
 Grammar
 --------
     
-.. code:: python
-   # Import
+Import
+
    from pybrainyquote import *
 
-.. code:: python
-    # Get quotes
+Get quotes
+
     Quote.today(topic=what you like) # get today topic
     get_popular_topics() # have a look at the lists popular topics, if you do not have any idea
     get_topics()
