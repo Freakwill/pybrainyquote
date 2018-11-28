@@ -197,12 +197,17 @@ class Quote(object):
                 return t in quote_of_the_day
             except:
                 pass
-        return Quote.fromTag(container.find(f).find('div', {'class': 'clearfix'}))
+        try:
+            return Quote.fromTag(container.find(f).find('div', {'class': 'clearfix'}))
+        except:
+            return defaultQuote
 
     @staticmethod
-    def read_yaml(fname):
+    def read_yaml(fname, topic=None):
         import yaml
         with open(fname) as fo:
             s = fo.read()
         quotes = yaml.dump(s)
         return map(lambda d: Quote(**d) if isinstance(d, dict) else d, quotes)
+
+defaultQuote = Quote(content='Je pense, donc je suis.', topic='Reason', author='Rene Descartes')
