@@ -32,8 +32,8 @@ import::
     from pybrainyquote import *
 
 
-get quotes::
-
+Get quotes
+```python
     Quote.today(topic=what you like) # get today topic
     get_popular_topics() # have a look at the lists popular topics, if you do not have any idea
     get_topics()
@@ -43,6 +43,7 @@ get quotes::
     Quote.find_all(topic)
     Quote.find(topic)
     Quote.find(topic)
+```
 
 Future
 -------
