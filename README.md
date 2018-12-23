@@ -40,6 +40,9 @@ Get quotes
     Quote.find_all(topic)     # just try the following
     Quote.find(topic)
     Quote.find(topic)
+    
+    Quote.choice_yaml(yamlfile) # choose a quote in yaml files randomly
+    Quote.read_yaml(yamlfile)
 
 Future
 -------
