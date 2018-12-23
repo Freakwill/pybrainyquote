@@ -1,0 +1,22 @@
+# Write down your favourite quote here.
+
+
+- !!python/object:pybrainyquote.Quote
+  content: >
+    No one has ever read a book, only one in the book to read themselves, to find themselves or to check their own.
+  topic: Unknown
+  author: Roman Rollan
+
+
+- !!python/object:pybrainyquote.Quote
+  content: Je pense, donc je suis.
+  topic: Science
+  author: Rene Descartes
+
+
+- !!python/object:pybrainyquote.Quote
+  content: >
+    To show off what he needed anything; hide anything, what self-esteem. 
+    The so-called normal people, good people just self-defense. The real mental health, is defenseless without victimization.
+  topic: Personality
+  author: Unknown 
