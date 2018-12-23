@@ -68,7 +68,7 @@ def get_authors():
 # class BaseSearcher filter
 
 class Quote(object):
-    '''Quote class
+    """Quote class
     
     Quotes of famous peaple
 
@@ -81,18 +81,18 @@ class Quote(object):
     >>> quote = Quote.random(topic='love')
     >>> print(quote)
     >>> The greatest healing therapy is friendship and love. --- Hubert H. Humphrey
-    '''
+    """
     
     __slots__ = ('content', 'topic', 'author', 'info')
 
     def __init__(self, content='', topic='', author='', info=''):
-        '''
+        """
         Keyword Arguments:
             content {str} -- [content of the quote] (default: {''})
             topic {str} -- [topic of the quote] (default: {''})
             author {str} -- [the author] (default: {''})
             info {str} -- related information (default: {''})
-        '''
+        """
         self.content = content
         self.topic = topic
         self.author = author
@@ -206,8 +206,14 @@ class Quote(object):
     def read_yaml(fname, topic=None):
         import yaml
         with open(fname) as fo:
-            s = fo.read()
-        quotes = yaml.dump(s)
+            quotes = yaml.load(fo)
         return map(lambda d: Quote(**d) if isinstance(d, dict) else d, quotes)
+
+    @staticmethod
+    def choice_yaml(fname, topic=None):
+        import yaml
+        with open(fname) as fo:
+            d = random.choice(yaml.load(fo))
+        return Quote(**d) if isinstance(d, dict) else d
 
 defaultQuote = Quote(content='Je pense, donc je suis.', topic='Reason', author='Rene Descartes')
