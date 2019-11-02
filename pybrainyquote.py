@@ -111,11 +111,21 @@ class Quote(object):
             return self.content
         elif spec == 'tight':
             return '{0.content} --- {0.author}'.format(self)
+        elif spec.isdigit():
+            c = int(spec)
+            words = '{0:tight}'.format(self).split(' ')
+            L = len(words)
+            n, r = divmod(L, c)
+            return '\n'.join([' '.join(words[i:i+c]) for i in range(n)] + [' '.join(words[n*c:n*c+r])])
         else:
             L = len(self.content)
             return '{0:content}\n{0:signature}'.format(self)
+            
+    def pretty(self):
+        return '{0:7}'.format(self)
 
     def toHTML(self):
+        # translate to HTML, applied in uberschit widgets
         return """
   <div class="quote">
     <div class="content">{0.content}</div>
@@ -130,14 +140,11 @@ class Quote(object):
   </quote>""".format(self)
 
     def __getstate__(self):
-        return self.content, self.topic, self.author, self.info
+        return {prop: getattr(self, prop) for prop in Quote.__slots__}
 
     def __setstate__(self, state):
-        if isinstance(state, dict):
-            for prop in Quote.__slots__:
-                setattr(self, prop, state.get(prop, ""))
-        else:
-            self.content, self.topic, self.author, self.info = state
+        for prop in Quote.__slots__:
+            setattr(self, prop, state.get(prop, ""))
 
     @staticmethod
     def random(*args, **kwargs):
@@ -167,14 +174,14 @@ class Quote(object):
             else:
                 quotes = []
                 for topic in TOPICS:
-                    quotes = Quote.fromTag(tag)
+                    quotes = Quote.find_all(topic=topic)
                     quotes.extend(quotes)
         return quotes
 
     @staticmethod
     def fromTag(tag):
-        content = tag.find('a', {'title': 'view quote'}, recursive=False)
-        author = tag.find('a', {'title': 'view author'}, recursive=False)
+        content = tag.find('a', {'title': 'view quote'})
+        author = tag.find('a', {'title': 'view author'})
         return Quote(content=content.text, author=fix(author.text))
 
     @staticmethod
@@ -206,14 +213,15 @@ class Quote(object):
     def read_yaml(fname, topic=None):
         import yaml
         with open(fname) as fo:
-            quotes = yaml.load(fo)
+            quotes = yaml.full_load(fo)
         return map(lambda d: Quote(**d) if isinstance(d, dict) else d, quotes)
 
     @staticmethod
     def choice_yaml(fname, topic=None):
         import yaml
         with open(fname) as fo:
-            d = random.choice(yaml.load(fo))
+            d = random.choice(yaml.full_load(fo))
         return Quote(**d) if isinstance(d, dict) else d
+
 
 defaultQuote = Quote(content='Je pense, donc je suis.', topic='Reason', author='Rene Descartes')
