@@ -47,6 +47,8 @@ Get quotes
     Quote.choice_yaml(yamlfile) # choose a quote in yaml files randomly
     Quote.read_yaml(yamlfile)
 
+In most cases, we need not operate Quote object, and the staticmethods are used only.
+
 Future
 -------
 Define a search engine for quotes, and a method to get one quote randomly. (Completed partly)
