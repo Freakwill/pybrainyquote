@@ -190,7 +190,8 @@ class Quote(object):
         url = HOME / 'quote_of_the_day'
         response = requests.get(url)
         soup = bs4.BeautifulSoup(response.text, "lxml")
-        container = soup.find('div', {'class': 'container bqQOTD'})
+        container = soup.find('div', {'class': 'qotd-wrapper-cntr'})
+
 
         if isinstance(topic, str):
             quote_of_the_day = [topic.capitalize()]
@@ -206,7 +207,8 @@ class Quote(object):
                 pass
         try:
             return Quote.fromTag(container.find(f).find('div', {'class': 'clearfix'}))
-        except:
+        except Exception as e:
+            # print(e)
             return defaultQuote
 
     @staticmethod
@@ -225,3 +227,6 @@ class Quote(object):
 
 
 defaultQuote = Quote(content='Je pense, donc je suis.', topic='Reason', author='Rene Descartes')
+
+if __name__ == '__main__':
+    print(Quote.today())
