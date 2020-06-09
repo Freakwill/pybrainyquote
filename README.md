@@ -35,7 +35,8 @@ Import
 Get quotes
 
     Quote.today(topic=what you like) # get today topic
-    get_popular_topics() # have a look at the lists popular topics, if you do not have any idea
+    
+    get_popular_topics() # have a look at the lists of popular topics, if you do not have any idea
     get_topics()
     get_authors()
 
