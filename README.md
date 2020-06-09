@@ -7,7 +7,9 @@ Requirements
 -------------
 
 requests
+
 bs4
+
 furl
 
 
