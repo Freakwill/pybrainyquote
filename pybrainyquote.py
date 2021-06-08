@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import re
+
 import random
 
 import bs4
@@ -8,10 +8,9 @@ import requests
 import furl
 
 
+
 HOME = furl.furl("http://www.brainyquote.com")
 
-# def tosuffix(s):
-#     return ''.join(c.lower() for c in s if c.isalpha())
 TOPICS = ['Motivational', 'Friendship', 'Love', 'Smile', 'Life', 'Inspirational', 'Family', 'Nature', 'Positive', 'Attitude']
 
 def fix(name):
@@ -99,10 +98,10 @@ class Quote(object):
         self.info = info
 
     def __str__(self):
-        return '{0:tight}'.format(self)
+        return f'{self:tight}'
 
     def __repr__(self):
-        return 'Quote ({0.topic}): {0}'.format(self)
+        return f'Quote ({self.topic}): {self}'
 
     def __format__(self, spec):
         if spec == 'signature':
@@ -113,31 +112,31 @@ class Quote(object):
             return '{0.content} --- {0.author}'.format(self)
         elif spec.isdigit():
             c = int(spec)
-            words = '{0:tight}'.format(self).split(' ')
+            words = f'{self:tight}'.split(' ')
             L = len(words)
             n, r = divmod(L, c)
             return '\n'.join([' '.join(words[i:i+c]) for i in range(n)] + [' '.join(words[n*c:n*c+r])])
         else:
             L = len(self.content)
-            return '{0:content}\n{0:signature}'.format(self)
+            return f'{self:content}\n{self:signature}'
             
     def pretty(self):
-        return '{0:7}'.format(self)
+        return f'{self:7}'
 
     def toHTML(self):
         # translate to HTML, applied in uberschit widgets
-        return """
+        return f"""
   <div class="quote">
-    <div class="content">{0.content}</div>
-    <div class="author">--- {0.author}</div>
-  </div>""".format(self)
+    <div class="content">{self.content}</div>
+    <div class="author">--- {self.author}</div>
+  </div>"""
 
     def toXML(self):
-        return """
+        return f"""
   <quote>
-    <content>{0.content}</content>
-    <author>--- {0.author}</author>
-  </quote>""".format(self)
+    <content>{self.content}</content>
+    <author>--- {self.author}</author>
+  </quote>"""
 
     def __getstate__(self):
         return {prop: getattr(self, prop) for prop in Quote.__slots__}
@@ -157,7 +156,7 @@ class Quote(object):
     @staticmethod
     def find_all(topic='', author='', index=''):
         if topic:
-            url = HOME / ('topics/%s' % topic)
+            url = HOME / 'topics' / topic
             response = requests.get(url)
             soup = bs4.BeautifulSoup(response.text, "lxml")
             tags = soup.find('div', {'id':'quotesList'})
@@ -166,7 +165,7 @@ class Quote(object):
                 quotes = [quote for quote in quotes if quote.author == author]
         else:
             if author:
-                url = HOME / ('authors/%s' % author)
+                url = HOME / 'authors' / author
                 response = requests.get(url)
                 soup = bs4.BeautifulSoup(response.text, "lxml")
                 tags = soup.find('div', {'id':'quotesList'})
@@ -180,7 +179,7 @@ class Quote(object):
 
     @staticmethod
     def fromTag(tag):
-        content = tag.find('a', {'title': 'view quote'})
+        content = tag.find('a', {'title': 'view quote', 'class': 'b-qt'})
         author = tag.find('a', {'title': 'view author'})
         return Quote(content=content.text, author=fix(author.text))
 
@@ -199,14 +198,8 @@ class Quote(object):
             quote_of_the_day = [t.capitalize() for t in topic]
         else:
             quote_of_the_day = ['']
-        def f(tag):
-            try:
-                t = tag.find('h2', {'class':'qotd-h2'}).text.partition('Quote of the Day')[0]
-                return t in quote_of_the_day
-            except:
-                pass
         try:
-            return Quote.fromTag(container.find(f).find('div', {'class': 'clearfix'}))
+            return Quote.fromTag(container.find('div', {'class': 'clearfix'}))
         except Exception as e:
             # print(e)
             return defaultQuote
@@ -230,3 +223,5 @@ defaultQuote = Quote(content='Je pense, donc je suis.', topic='Reason', author='
 
 if __name__ == '__main__':
     print(Quote.today())
+    for q in Quote.find_all(topic='love'):
+        print(q)
