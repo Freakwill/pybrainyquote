@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "pybrainyquote"
+version = "1.2"
+description = "Get quotes from brainyquote. Make you life positive."
+
+authors = ["William Song <30965609+Freakwill@users.noreply.github.com>"]
+
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/Freakwill/pybrainyquote"
+repository = "https://github.com/Freakwill/pybrainyquote"
+keywords = ["brainyquote", "crawler"]
+classifiers = [
+    "Environment :: MacOS X",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Intended Audience :: Education",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+requests = ""
+bs4 = ""
+furl = ""
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+# [build-system]
+# requires = ["poetry-core"]
+# build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry.scripts]
+brainyquote = 'pybrainyquote:main'

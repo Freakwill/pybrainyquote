@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""Get quotes from www.brainyquote.com
+
+Keep positive for every day.
+"""
 
 import random
 
@@ -8,10 +12,10 @@ import requests
 import furl
 
 
-
 HOME = furl.furl("http://www.brainyquote.com")
 
-TOPICS = ['Motivational', 'Friendship', 'Love', 'Smile', 'Life', 'Inspirational', 'Family', 'Nature', 'Positive', 'Attitude']
+TOPICS = ['Motivational', 'Friendship', 'Love', 'Smile', 'Life', 
+    'Inspirational', 'Family', 'Nature', 'Positive', 'Attitude']
 
 def fix(name):
     """Fix a name
@@ -113,9 +117,8 @@ class Quote(object):
         elif spec.isdigit():
             c = int(spec)
             words = f'{self:tight}'.split(' ')
-            L = len(words)
-            n, r = divmod(L, c)
-            return '\n'.join([' '.join(words[i:i+c]) for i in range(n)] + [' '.join(words[n*c:n*c+r])])
+            r = len(words) // c
+            return '\n'.join([' '.join(words[i*c:(i+1)*c]) for i in range(r)] + [' '.join(words[r*c:])])
         else:
             L = len(self.content)
             return f'{self:content}\n{self:signature}'
@@ -187,7 +190,7 @@ class Quote(object):
     def today(topic=None):
         # get today quote
         url = HOME / 'quote_of_the_day'
-        response = requests.get(url)
+        response = requests.get(url, headers={"User-Agent":""})
         soup = bs4.BeautifulSoup(response.text, "lxml")
         container = soup.find('div', {'class': 'qotd-wrapper-cntr'})
 
@@ -201,7 +204,7 @@ class Quote(object):
         try:
             return Quote.fromTag(container.find('div', {'class': 'clearfix'}))
         except Exception as e:
-            # print(e)
+            print(e)
             return defaultQuote
 
     @staticmethod
@@ -219,9 +222,11 @@ class Quote(object):
         return Quote(**d) if isinstance(d, dict) else d
 
 
-defaultQuote = Quote(content='Je pense, donc je suis.', topic='Reason', author='Rene Descartes')
+defaultQuote = Quote(content='Je pense, donc je suis.', 
+                    topic='Reason', author='Rene Descartes')
+
 
 if __name__ == '__main__':
     print(Quote.today())
-    for q in Quote.find_all(topic='love'):
-        print(q)
+    # for q in Quote.find_all(topic='love'):
+    #     print(q)
